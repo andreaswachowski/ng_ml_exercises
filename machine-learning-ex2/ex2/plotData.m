@@ -12,8 +12,10 @@ figure; hold on;
 %               examples and 'ko' for the negative examples.
 %
 
-
-
+plot(X(y == 1,1),X(y == 1,2),'k+','LineWidth',2,'MarkerSize',7);
+plot(X(y == 0,1),X(y == 0,2),'ko','MarkerFaceColor','y','MarkerSize',7);
+ylabel('Exam 1 score');
+xlabel('Exam 2 score');
 
 
 
