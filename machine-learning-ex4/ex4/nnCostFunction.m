@@ -62,24 +62,39 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+a1 = [ones(m, 1) X]; % 5000 401
 
+z2 = a1*Theta1';
+a2 = sigmoid(z2);
+a2 = [ones(m, 1) a2];
+z3 = a2 * Theta2';
+a3 = sigmoid(z3);
 
+yv = [1:num_labels] == y;
 
+J = sum(sum(-yv .* log(a3) - (1-yv) .* log(1-a3)))/m ...
+    + lambda/(2*m)*(sum(sum(Theta1(:,2:end) .* Theta1(:,2:end))) ...
+    + sum(sum(Theta2(:,2:end) .* Theta2(:,2:end))));
 
+% Backpropagation
 
+d3 = a3 - yv; % 5000 10
+% size(Theta2) 10 26
+% size(z2) 5000 25
 
+d2 = (d3 * Theta2) .* a2 .* (1-a2); % 5000 26
 
+d2 = d2(:, 2:end); % 5000 25
 
+% size(Theta2_grad) 10 26
+% size(a2) 5000 26
+% size(d3) 5000 10
 
+Theta2_grad = (Theta2_grad+d3'*a2)/m;
+Theta1_grad = (Theta1_grad+d2'*a1)/m;
 
-
-
-
-
-
-
-
-
+Theta2_grad(:,2:end) = Theta2_grad(:,2:end) + lambda*Theta2(:,2:end)/m;
+Theta1_grad(:,2:end) = Theta1_grad(:,2:end) + lambda*Theta1(:,2:end)/m;
 % -------------------------------------------------------------
 
 % =========================================================================
