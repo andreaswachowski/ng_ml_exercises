@@ -39,14 +39,16 @@ error_val = zeros(length(lambda_vec), 1);
 %
 %
 
-
-
-
-
-
-
-
-
+for i = 1:length(lambda_vec)
+    lambda = lambda_vec(i);
+    theta = trainLinearReg(X, y, lambda);
+    % Note: Regularization is built-in to theta when you train the system. We do not need to include it twice.
+    % When we measure Jtrain, Jcv, and Jtest, we want to measure the true error, without any additional penalties.
+    [J, grad] = linearRegCostFunction(X, y, theta, 0);
+    error_train(i) = J;
+    [J, grad] = linearRegCostFunction(Xval, yval, theta, 0);
+    error_val(i) = J;
+endfor
 
 % =========================================================================
 
